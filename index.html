@@ -64,58 +64,26 @@
     }
     .nav-cta:hover { background: var(--green-dark); }
 
-    .hero {
+    .content {
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 140px 2rem 60px;
+      align-items: center; justify-content: center;
+      padding: 120px 2rem 80px;
+      flex: 1;
       background: radial-gradient(ellipse at 50% 0%, rgba(22,216,102,0.06) 0%, transparent 60%);
     }
-    .hero-badge {
+
+    .badge {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--green-glow); color: var(--green);
       padding: 6px 16px; border-radius: var(--radius-pill);
       font-size: 13px; font-weight: 600;
-      margin-bottom: 2rem; border: 1px solid rgba(22,216,102,0.2);
-    }
-    .hero h1 {
-      font-family: var(--font-heading);
-      font-size: clamp(40px, 6vw, 64px);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -1.5px;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, #fff 0%, #b0b4ba 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--green) 0%, #4ade80 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero p {
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--text-secondary);
-      max-width: 560px; margin: 0 auto;
-    }
-
-    .divider {
-      border: none; border-top: 1px solid var(--border);
-      max-width: 900px; margin: 0 auto;
-    }
-
-    .tools-section {
-      padding: 60px 2rem 80px;
-      max-width: 900px; margin: 0 auto;
-      width: 100%;
-    }
-    .tools-section h2 {
-      font-family: var(--font-heading);
-      font-size: 28px; font-weight: 700;
-      text-align: center; margin-bottom: 2.5rem;
+      margin-bottom: 3rem; border: 1px solid rgba(22,216,102,0.2);
     }
 
     .tool-cards {
       display: flex; flex-direction: column;
       gap: 16px;
+      max-width: 900px; width: 100%;
     }
 
     .tool-card {
@@ -181,14 +149,12 @@
       border-top: 1px solid var(--border);
       padding: 2rem;
       text-align: center;
-      margin-top: auto;
     }
     .footer-copy { font-size: 13px; color: var(--text-muted); }
 
     @media (max-width: 768px) {
       nav { padding: 0 1rem; }
-      .hero { padding: 100px 1.5rem 40px; }
-      .tools-section { padding: 40px 1.5rem 60px; }
+      .content { padding: 100px 1.5rem 60px; }
       .tool-card {
         grid-template-columns: 1fr;
         padding: 24px;
@@ -207,26 +173,17 @@
   <a href="https://openart.ai" target="_blank" class="nav-cta">openart.ai</a>
 </nav>
 
-<section class="hero">
-  <div class="hero-badge">
+<section class="content">
+  <div class="badge">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
     Internal Use Only
   </div>
-  <h1>OpenArt <em>Internal Tools</em></h1>
-  <p>Sales enablement resources for the OpenArt enterprise team.</p>
-</section>
-
-<hr class="divider">
-
-<section class="tools-section">
-  <h2>Tools</h2>
 
   <div class="tool-cards">
     <a href="https://rgajwani.github.io/openart-newuser-tutorial/" class="tool-card">
       <div class="tool-info">
         <div class="tool-label">Onboarding</div>
         <div class="tool-name">New User Tutorial</div>
-        <div class="tool-desc">Complete written guide to OpenArt's beginner video course. Synced video player, full-text search, and progress tracking across 4 learning tracks and 14 modules.</div>
         <div class="tool-meta">
           <span class="tool-tag">Public</span>
           <span class="tool-tag">Tutorial</span>
