@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenArt — Internal Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #090a0a;
+      --surface: #141414;
+      --surface-hover: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #ffffff;
+      --text-secondary: #b0b4ba;
+      --text-muted: #6b7280;
+      --green: #16d866;
+      --green-glow: rgba(22, 216, 102, 0.15);
+      --green-dark: #0fa84e;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 46px;
+      --font-heading: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(9,10,10,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo span {
+      font-family: var(--font-heading);
+      font-weight: 700; font-size: 18px;
+    }
+    .nav-cta {
+      color: var(--text-secondary); text-decoration: none;
+      padding: 8px 16px; border-radius: var(--radius-pill);
+      font-size: 14px; font-weight: 600; transition: all 0.2s;
+      background: var(--green); color: #000;
+    }
+    .nav-cta:hover { background: var(--green-dark); }
+
+    .hero {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 140px 2rem 60px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(22,216,102,0.06) 0%, transparent 60%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green-glow); color: var(--green);
+      padding: 6px 16px; border-radius: var(--radius-pill);
+      font-size: 13px; font-weight: 600;
+      margin-bottom: 2rem; border: 1px solid rgba(22,216,102,0.2);
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, #b0b4ba 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--green) 0%, #4ade80 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 560px; margin: 0 auto;
+    }
+
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 900px; margin: 0 auto;
+    }
+
+    .tools-section {
+      padding: 60px 2rem 80px;
+      max-width: 900px; margin: 0 auto;
+      width: 100%;
+    }
+    .tools-section h2 {
+      font-family: var(--font-heading);
+      font-size: 28px; font-weight: 700;
+      text-align: center; margin-bottom: 2.5rem;
+    }
+
+    .tool-cards {
+      display: flex; flex-direction: column;
+      gap: 16px;
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-decoration: none; color: var(--text);
+      transition: all 0.3s;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 24px;
+    }
+    .tool-card:hover {
+      border-color: var(--green);
+      background: var(--surface-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(22,216,102,0.08);
+    }
+
+    .tool-info { display: flex; flex-direction: column; gap: 6px; }
+    .tool-label {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--green);
+    }
+    .tool-name {
+      font-family: var(--font-heading);
+      font-size: 22px; font-weight: 700;
+    }
+    .tool-desc {
+      font-size: 14px; color: var(--text-secondary);
+      line-height: 1.6; max-width: 560px;
+    }
+    .tool-meta {
+      display: flex; gap: 12px; margin-top: 4px;
+    }
+    .tool-tag {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 10px; border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .tool-tag.locked {
+      background: rgba(239,68,68,0.08);
+      color: #ef4444;
+      border-color: rgba(239,68,68,0.2);
+    }
+
+    .tool-arrow {
+      font-size: 24px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .tool-card:hover .tool-arrow {
+      color: var(--green);
+      transform: translateX(4px);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+    .footer-copy { font-size: 13px; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      .hero { padding: 100px 1.5rem 40px; }
+      .tools-section { padding: 40px 1.5rem 60px; }
+      .tool-card {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+      .tool-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="48" stroke="#16d866" stroke-width="4"/><path d="M30 50 L45 65 L70 35" stroke="#16d866" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <span>OpenArt <span style="color: var(--green);">Internal Tools</span></span>
+  </a>
+  <a href="https://openart.ai" target="_blank" class="nav-cta">openart.ai</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    Internal Use Only
+  </div>
+  <h1>OpenArt <em>Internal Tools</em></h1>
+  <p>Sales enablement resources for the OpenArt enterprise team.</p>
+</section>
+
+<hr class="divider">
+
+<section class="tools-section">
+  <h2>Tools</h2>
+
+  <div class="tool-cards">
+    <a href="https://rgajwani.github.io/openart-newuser-tutorial/" class="tool-card">
+      <div class="tool-info">
+        <div class="tool-label">Onboarding</div>
+        <div class="tool-name">New User Tutorial</div>
+        <div class="tool-desc">Complete written guide to OpenArt's beginner video course. Synced video player, full-text search, and progress tracking across 4 learning tracks and 14 modules.</div>
+        <div class="tool-meta">
+          <span class="tool-tag">Public</span>
+          <span class="tool-tag">Tutorial</span>
+        </div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="https://rgajwani.github.io/openart-battlecards/" class="tool-card">
+      <div class="tool-info">
+        <div class="tool-label">Sales</div>
+        <div class="tool-name">Enterprise Battle Cards</div>
+        <div class="tool-desc">Competitive positioning against 8 competitors — Adobe Firefly, Higgsfield, Weavy, Runway, FreePik, Luma, Krea, and LTX Studio. Objection handling, talk tracks, and proof points.</div>
+        <div class="tool-meta">
+          <span class="tool-tag locked">Password Protected</span>
+          <span class="tool-tag">Competitive Intel</span>
+        </div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="https://rgajwani.github.io/openart-proposal-generator/" class="tool-card">
+      <div class="tool-info">
+        <div class="tool-label">Sales</div>
+        <div class="tool-name">Proposal Generator</div>
+        <div class="tool-desc">Generate polished, branded client proposals and order forms as PDF. Auto-calculates pricing with volume discounts, credit allocations, and contract terms.</div>
+        <div class="tool-meta">
+          <span class="tool-tag locked">Password Protected</span>
+          <span class="tool-tag">Deal Tools</span>
+        </div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-copy">OpenArt Internal Tools — For authorized team members only</p>
+</footer>
+
+</body>
+</html>
